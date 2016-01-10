@@ -6,7 +6,11 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.Toast;
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import com.wenchao.cardstack.CardStack;
 
 public class MainActivity extends AppCompatActivity {
@@ -15,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
   private static final int DIRECTION_ONE = 1;
   private static final int DIRECTION_TWO = 2;
   private static final int DIRECTION_THREE = 3;
+  @Bind(R.id.discardTopButton) Button mDiscardTopButton;
 
   private CardStack.CardEventListener cardEventListener = new CardStack.CardEventListener() {
     // implement card event interface
@@ -77,14 +82,16 @@ public class MainActivity extends AppCompatActivity {
       Log.i(TAG, "CardStack topCardTapped triggered");
     }
   };
+  private CardStack mCardStack;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
+    ButterKnife.bind(this);
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
 
-    CardStack mCardStack = (CardStack) findViewById(R.id.cardStackContainer);
+    mCardStack = (CardStack) findViewById(R.id.cardStackContainer);
 
     mCardStack.setContentResource(R.layout.card_content);
     mCardStack.setStackMargin(20);
@@ -118,5 +125,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     return super.onOptionsItemSelected(item);
+  }
+
+  @OnClick(R.id.discardTopButton) public void discardTop() {
+    mCardStack.discardTop(3);
   }
 }
